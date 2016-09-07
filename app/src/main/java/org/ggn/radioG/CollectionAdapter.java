@@ -37,46 +37,52 @@ import java.io.IOException;
 /**
  * CollectionAdapter class
  */
-public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAdapterViewHolder> {
+public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapterViewHolder>
+{
 
     /* Define log tag */
     private static final String LOG_TAG = CollectionAdapter.class.getSimpleName();
 
 
     /* Main class variables */
-    private final Activity mActivity;
-    private final File mFolder;
-    private BroadcastReceiver mPlaybackStateChangedReceiver;
-    private boolean mPlayback;
-    private boolean mStationLoading;
-    private int mStationIDCurrent;
-    private int mStationIDLast;
-    private int mStationIDSelected;
-    private boolean mTwoPane;
+    private final Activity            mActivity;
+    private final File                mFolder;
+    private       BroadcastReceiver   mPlaybackStateChangedReceiver;
+    private       boolean             mPlayback;
+    private       boolean             mStationLoading;
+    private       int                 mStationIDCurrent;
+    private       int                 mStationIDLast;
+    private       int                 mStationIDSelected;
+    private       boolean             mTwoPane;
     private final SortedList<Station> mStationList;
 
 
     /* Constructor */
-    public CollectionAdapter (Activity activity, File folder) {
+    public CollectionAdapter(Activity activity, File folder)
+    {
         // set main variables
         mActivity = activity;
         mFolder = folder;
         mStationIDSelected = 0;
-        mStationList = new SortedList<Station>(Station.class, new SortedListAdapterCallback<Station>(this) {
+        mStationList = new SortedList<Station>(Station.class, new SortedListAdapterCallback<Station>(this)
+        {
 
             @Override
-            public int compare(Station station1, Station station2) {
+            public int compare(Station station1, Station station2)
+            {
                 // Compares two stations: returns "1" if name if this station is greater than name of given station
                 return station1.getStationName().compareToIgnoreCase(station2.getStationName());
             }
 
             @Override
-            public boolean areContentsTheSame(Station oldStation, Station newStation) {
+            public boolean areContentsTheSame(Station oldStation, Station newStation)
+            {
                 return oldStation.getStationName().equals(newStation.getStationName());
             }
 
             @Override
-            public boolean areItemsTheSame(Station station1, Station station2) {
+            public boolean areItemsTheSame(Station station1, Station station2)
+            {
                 // return station1.equals(station2);
                 return areContentsTheSame(station1, station2);
             }
@@ -92,7 +98,8 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+    public void onAttachedToRecyclerView(RecyclerView recyclerView)
+    {
         super.onAttachedToRecyclerView(recyclerView);
         // load state
         loadAppState(mActivity);
@@ -102,7 +109,8 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     @Override
-    public CollectionAdapterViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+    public CollectionAdapterViewHolder onCreateViewHolder(final ViewGroup parent, int viewType)
+    {
 
         // get view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_collection, parent, false);
@@ -113,24 +121,31 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     @Override
-    public void onBindViewHolder(CollectionAdapterViewHolder holder, final int position) {
+    public void onBindViewHolder(CollectionAdapterViewHolder holder, final int position)
+    {
         // Problem synopsis: Do not treat position as fixed; only use immediately and call holder.getAdapterPosition() to look it up later
         // get station from position
         final Station station = mStationList.get(position);
 
-        if (mTwoPane && mStationIDSelected == position) {
+        if (mTwoPane && mStationIDSelected == position)
+        {
             holder.getListItemLayout().setSelected(true);
-        } else {
+        }
+        else
+        {
             holder.getListItemLayout().setSelected(false);
         }
 
         // create station image
         Bitmap stationImageSmall;
         Bitmap stationImage;
-        if (station.getStationImageFile().exists()) {
+        if (station.getStationImageFile().exists())
+        {
             // get image from collection
             stationImageSmall = BitmapFactory.decodeFile(station.getStationImageFile().toString());
-        } else {
+        }
+        else
+        {
             stationImageSmall = null;
         }
         ImageHelper imageHelper = new ImageHelper(stationImageSmall, mActivity);
@@ -143,45 +158,63 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
         holder.getStationNameView().setText(station.getStationName());
 
         // set playback indicator - in phone view only
-        if (!mTwoPane && mPlayback && (station.getPlaybackState() || mStationIDCurrent == position)) {
-            if (mStationLoading) {
+        if (!mTwoPane && mPlayback && (station.getPlaybackState() || mStationIDCurrent == position))
+        {
+            if (mStationLoading)
+            {
                 holder.getPlaybackIndicator().setBackgroundResource(R.drawable.ic_playback_indicator_small_loading_24dp);
-            } else {
+            }
+            else
+            {
                 holder.getPlaybackIndicator().setBackgroundResource(R.drawable.ic_playback_indicator_small_started_24dp);
             }
             holder.getPlaybackIndicator().setVisibility(View.VISIBLE);
-        } else {
+        }
+        else
+        {
             holder.getPlaybackIndicator().setVisibility(View.GONE);
         }
 
         // attach three dots menu - in phone view only
-        if (!mTwoPane) {
-            holder.getStationMenuView().setOnClickListener(new View.OnClickListener() {
+        if (!mTwoPane)
+        {
+            holder.getStationMenuView().setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View view) {
+                public void onClick(View view)
+                {
                     StationContextMenu menu = new StationContextMenu();
                     menu.initialize(mActivity, view, station, position);
                     menu.show();
                 }
             });
-        } else {
+        }
+        else
+        {
             holder.getStationMenuView().setVisibility(View.GONE);
         }
 
         // attach click listener
-        holder.setClickListener(new CollectionAdapterViewHolder.ClickListener() {
+        holder.setClickListener(new CollectionAdapterViewHolder.ClickListener()
+        {
             @Override
-            public void onClick(View view, int pos, boolean isLongClick) {
+            public void onClick(View view, int pos, boolean isLongClick)
+            {
                 mStationIDSelected = pos;
                 saveAppState(mActivity);
                 LogHelper.v(LOG_TAG, "Selected station (ID): " + mStationIDSelected);
-                if (isLongClick && !mTwoPane) {
+                if (isLongClick && !mTwoPane)
+                {
                     // long click in phone mode
                     handleLongClick(pos);
-                } else if (!isLongClick && !mTwoPane) {
+                }
+                else if (!isLongClick && !mTwoPane)
+                {
                     // click in phone mode
                     handleSingleClick(pos);
-                } else {
+                }
+                else
+                {
                     // click in tablet mode
                     handleSingleClick(pos);
                     notifyDataSetChanged();
@@ -193,48 +226,70 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(int position)
+    {
         return position;
     }
 
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return mStationList.size();
     }
 
 
     /* Fills sorted list of station */
-    private void loadCollection()  {
+    private void loadCollection()
+    {
 
         // create folder if necessary
-        if (!mFolder.exists()) {
+        if (!mFolder.exists())
+        {
             LogHelper.v(LOG_TAG, "Creating mFolder new folder: " + mFolder.toString());
             mFolder.mkdir();
         }
 
         // create nomedia file to prevent media scanning
         File nomedia = new File(mFolder, ".nomedia");
-        if (!nomedia.exists()) {
+        if (!nomedia.exists())
+        {
             LogHelper.v(LOG_TAG, "Creating .nomedia file in folder: " + mFolder.toString());
 
-            try (FileOutputStream noMediaOutStream = new FileOutputStream(nomedia)) {
+            try (FileOutputStream noMediaOutStream = new FileOutputStream(nomedia))
+            {
                 noMediaOutStream.write(0);
-            } catch (IOException e) {
-                LogHelper.e(LOG_TAG, "Unable to write .nomedia file in folder: " + mFolder.toString());
+            }
+            catch (IOException e)
+            {
+                try
+                {
+                    FileOutputStream outStream = new FileOutputStream(nomedia);
+                    outStream.write(0);
+                    outStream.flush();
+                    outStream.close();
+                }
+                catch (Exception e1)
+                {
+                    e1.printStackTrace();
+                }
             }
         }
 
         // create array of Files from folder
         File[] listOfFiles = mFolder.listFiles();
 
-        if (listOfFiles != null) {
+        if (listOfFiles != null)
+        {
             // fill array list of mStations
-            for (File file : listOfFiles) {
-                if (file.isFile() && file.toString().endsWith(".m3u")) {
+            for (File file : listOfFiles)
+            {
+                if (file.isFile() && file.toString().endsWith(".m3u"))
+                {
                     // create new station from file
                     Station newStation = new Station(file);
-                    if (newStation.getStreamUri() != null) {
+                    if (newStation.getStreamUri() != null)
+                    {
                         mStationList.add(newStation);
                     }
                 }
@@ -245,11 +300,13 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     /* Handles click on list item */
-    private void handleSingleClick(int position) {
+    private void handleSingleClick(int position)
+    {
 
         Station station = mStationList.get(position);
 
-        if (mTwoPane) {
+        if (mTwoPane)
+        {
             Bundle args = new Bundle();
             args.putParcelable(TransistorKeys.ARG_STATION, station);
             args.putInt(TransistorKeys.ARG_STATION_ID, position);
@@ -260,7 +317,9 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
             mActivity.getFragmentManager().beginTransaction()
                     .replace(R.id.player_container, playerActivityFragment, TransistorKeys.PLAYER_FRAGMENT_TAG)
                     .commit();
-        } else {
+        }
+        else
+        {
             // add ID of station to intent and start activity
             Intent intent = new Intent(mActivity, PlayerActivity.class);
             intent.setAction(TransistorKeys.ACTION_SHOW_PLAYER);
@@ -272,12 +331,14 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     /* Handles long click on list item */
-    private void handleLongClick(int position) {
+    private void handleLongClick(int position)
+    {
 
         // get current playback state
         loadAppState(mActivity);
 
-        if (mPlayback && mStationList.get(position).getPlaybackState()) {
+        if (mPlayback && mStationList.get(position).getPlaybackState())
+        {
             // stop player service using intent
             Intent intent = new Intent(mActivity, PlayerService.class);
             intent.setAction(TransistorKeys.ACTION_STOP);
@@ -294,7 +355,9 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
             // inform user
             Toast.makeText(mActivity, mActivity.getString(R.string.toastmessage_long_press_playback_stopped), Toast.LENGTH_LONG).show();
-        } else {
+        }
+        else
+        {
             // start player service using intent
             Intent intent = new Intent(mActivity, PlayerService.class);
             intent.setAction(TransistorKeys.ACTION_PLAY);
@@ -308,7 +371,8 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
             mStationIDCurrent = position;
 
             // remove playback flag from last station
-            if (mPlayback && mStationIDLast != -1) {
+            if (mPlayback && mStationIDLast != -1)
+            {
                 mStationList.get(mStationIDLast).setPlaybackState(false);
             }
             // add playback flag to current station
@@ -330,7 +394,8 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     /* Loads app state from preferences */
-    private void loadAppState(Context context) {
+    private void loadAppState(Context context)
+    {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         mTwoPane = settings.getBoolean(TransistorKeys.PREF_TWO_PANE, false);
         mStationIDCurrent = settings.getInt(TransistorKeys.PREF_STATION_ID_CURRENTLY_PLAYING, -1);
@@ -338,38 +403,44 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
         mStationIDSelected = settings.getInt(TransistorKeys.PREF_STATION_ID_SELECTED, 0);
         mPlayback = settings.getBoolean(TransistorKeys.PREF_PLAYBACK, false);
         mStationLoading = settings.getBoolean(TransistorKeys.PREF_STATION_LOADING, false);
-        LogHelper.v(LOG_TAG, "Loading state ("+  mStationIDCurrent + " / " + mStationIDLast + " / " + mPlayback  + " / " + mStationLoading + ")");
+        LogHelper.v(LOG_TAG, "Loading state (" + mStationIDCurrent + " / " + mStationIDLast + " / " + mPlayback + " / " + mStationLoading + ")");
     }
 
 
     /* Saves app state to SharedPreferences */
-    private void saveAppState(Context context) {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = settings.edit();
+    private void saveAppState(Context context)
+    {
+        SharedPreferences        settings = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor   = settings.edit();
         editor.putInt(TransistorKeys.PREF_STATION_ID_SELECTED, mStationIDSelected);
         editor.apply();
-        LogHelper.v(LOG_TAG, "Saving state ("+  mStationIDCurrent + " / " + mStationIDLast + " / " + mPlayback  + " / " + mStationLoading + " / " + mStationIDSelected +")");
+        LogHelper.v(LOG_TAG, "Saving state (" + mStationIDCurrent + " / " + mStationIDLast + " / " + mPlayback + " / " + mStationLoading + " / " + mStationIDSelected + ")");
     }
 
 
     /* Setter for image file within station object with given ID */
-    public void setNewImageFile(int stationID, File stationImageFile) {
+    public void setNewImageFile(int stationID, File stationImageFile)
+    {
         mStationList.get(stationID).setStationImageFile(stationImageFile);
     }
 
 
     /* Setter for ID of currently selected station */
-    public void setStationIDSelected(int stationIDSelected, boolean playbackState, boolean startPlayback) {
+    public void setStationIDSelected(int stationIDSelected, boolean playbackState, boolean startPlayback)
+    {
         mStationIDSelected = stationIDSelected;
         saveAppState(mActivity);
-        if (mStationIDSelected >= 0) {
+        if (mStationIDSelected >= 0)
+        {
             mStationList.get(stationIDSelected).setPlaybackState(playbackState);
         }
-        if (mTwoPane && mStationIDSelected >= 0) {
+        if (mTwoPane && mStationIDSelected >= 0)
+        {
             handleSingleClick(mStationIDSelected);
         }
 
-        if (startPlayback) {
+        if (startPlayback)
+        {
             // start player service using intent
             Intent intent = new Intent(mActivity, PlayerService.class);
             intent.setAction(TransistorKeys.ACTION_PLAY);
@@ -382,24 +453,29 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     /* Setter for two pane flag */
-    public void setTwoPane(boolean twoPane) {
+    public void setTwoPane(boolean twoPane)
+    {
         mTwoPane = twoPane;
     }
 
 
     /* Reloads app state */
-    public void refresh() {
+    public void refresh()
+    {
         loadAppState(mActivity);
     }
 
 
     /* Finds station when given its Uri */
-    public Station findStation(Uri streamUri) {
+    public Station findStation(Uri streamUri)
+    {
 
         // traverse list of stations
-        for (int i = 0; i < mStationList.size(); i++) {
+        for (int i = 0; i < mStationList.size(); i++)
+        {
             Station station = mStationList.get(i);
-            if (station.getStreamUri().equals(streamUri)) {
+            if (station.getStreamUri().equals(streamUri))
+            {
                 return station;
             }
         }
@@ -410,37 +486,44 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     /* Getter for ID of given station */
-    public int getStationID (Station station) {
+    public int getStationID(Station station)
+    {
         return mStationList.indexOf(station);
     }
 
 
     /* Getter for station of given ID */
-    public Station getStation (int stationID) {
+    public Station getStation(int stationID)
+    {
         return mStationList.get(stationID);
     }
 
 
     /* Add station to collection */
-    public int add(Station station) {
-        if (station.getStationName() != null && station.getStreamUri() != null) {
+    public int add(Station station)
+    {
+        if (station.getStationName() != null && station.getStreamUri() != null)
+        {
             // add station to list of stations
             mStationList.add(station);
 
             // save playlist file and image file to local storage
             station.writePlaylistFile(mFolder);
-            if (station.getStationImage() != null) {
+            if (station.getStationImage() != null)
+            {
                 station.writeImageFile();
             }
 
             // return new index
             return mStationList.indexOf(station);
-        } else {
+        }
+        else
+        {
             // notify user and log failure to add
-            String errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_write);
-            String errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_write);
-            String errorDetails = mActivity.getResources().getString(R.string.dialog_error_details_write);
-            DialogError dialogError = new DialogError(mActivity, errorTitle, errorMessage, errorDetails);
+            String      errorTitle   = mActivity.getResources().getString(R.string.dialog_error_title_fetch_write);
+            String      errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_write);
+            String      errorDetails = mActivity.getResources().getString(R.string.dialog_error_details_write);
+            DialogError dialogError  = new DialogError(mActivity, errorTitle, errorMessage, errorDetails);
             dialogError.show();
             LogHelper.e(LOG_TAG, "Unable to add station to collection: Duplicate name and/or stream URL.");
             return -1;
@@ -449,17 +532,19 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     /* Rename station within collection */
-    public int rename(String newStationName, Station station, int stationID) {
+    public int rename(String newStationName, Station station, int stationID)
+    {
 
         // get old station
         Station oldStation = mStationList.get(stationID);
 
         // name of station is new
-        if (station != null && !oldStation.getStationName().equals(newStationName)) {
+        if (station != null && !oldStation.getStationName().equals(newStationName))
+        {
 
             // get reference to old files
             File oldStationPlaylistFile = oldStation.getStationPlaylistFile();
-            File oldStationImageFile = oldStation.getStationImageFile();
+            File oldStationImageFile    = oldStation.getStationImageFile();
 
             // update new station
             station.setStationName(newStationName);
@@ -479,7 +564,9 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
             // return changed station
             return mStationList.indexOf(station);
 
-        } else {
+        }
+        else
+        {
             // name of station is null or not new - notify user
             Toast.makeText(mActivity, mActivity.getString(R.string.toastalert_rename_unsuccessful), Toast.LENGTH_LONG).show();
             return -1;
@@ -489,26 +576,30 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     /* Delete station within collection */
-    public int delete(Station station, int stationID) {
+    public int delete(Station station, int stationID)
+    {
 
         boolean success = false;
 
         // delete playlist file
         File stationPlaylistFile = station.getStationPlaylistFile();
-        if (stationPlaylistFile.exists()) {
+        if (stationPlaylistFile.exists())
+        {
             stationPlaylistFile.delete();
             success = true;
         }
 
         // delete station image file
         File stationImageFile = station.getStationImageFile();
-        if (stationImageFile.exists()) {
+        if (stationImageFile.exists())
+        {
             stationImageFile.delete();
             success = true;
         }
 
         // remove station and notify user
-        if (success) {
+        if (success)
+        {
             mStationList.removeItemAt(stationID);
             Toast.makeText(mActivity, mActivity.getString(R.string.toastalert_delete_successful), Toast.LENGTH_LONG).show();
         }
@@ -517,13 +608,16 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
         ShortcutHelper shortcutHelper = new ShortcutHelper(mActivity);
         shortcutHelper.removeShortcut(station);
 
-        if (mTwoPane) {
+        if (mTwoPane)
+        {
             // determine ID of next station to display in two pane mode
-            if (mStationList.size() >= stationID) {
+            if (mStationList.size() >= stationID)
+            {
                 stationID--;
             }
 
-            if (stationID >= 0) {
+            if (stationID >= 0)
+            {
                 // show next station
                 Bundle args = new Bundle();
                 args.putParcelable(TransistorKeys.ARG_STATION, mStationList.get(stationID));
@@ -543,20 +637,24 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     /* Handles changes in state of playback, eg. start, stop, loading stream */
-    private void handlePlaybackStateChanged(Intent intent) {
+    private void handlePlaybackStateChanged(Intent intent)
+    {
 
         // load app state
         loadAppState(mActivity);
 
-        if (intent.hasExtra(TransistorKeys.EXTRA_PLAYBACK_STATE_CHANGE) && intent.hasExtra(TransistorKeys.EXTRA_STATION_ID)){
+        if (intent.hasExtra(TransistorKeys.EXTRA_PLAYBACK_STATE_CHANGE) && intent.hasExtra(TransistorKeys.EXTRA_STATION_ID))
+        {
 
             // get station ID from intent
             int stationID = intent.getIntExtra(TransistorKeys.EXTRA_STATION_ID, 0);
-            switch (intent.getIntExtra(TransistorKeys.EXTRA_PLAYBACK_STATE_CHANGE, 1)) {
+            switch (intent.getIntExtra(TransistorKeys.EXTRA_PLAYBACK_STATE_CHANGE, 1))
+            {
 
                 // CASE: player is preparing stream
                 case TransistorKeys.PLAYBACK_LOADING_STATION:
-                    if (mStationIDLast > -1 && mStationIDLast < mStationList.size() -1) {
+                    if (mStationIDLast > -1 && mStationIDLast < mStationList.size() - 1)
+                    {
                         mStationList.get(mStationIDLast).setPlaybackState(false);
                     }
                     mStationLoading = true;
@@ -585,13 +683,17 @@ public final class CollectionAdapter  extends RecyclerView.Adapter<CollectionAda
 
 
     /* Initializes broadcast receivers for onCreate */
-    private void initializeBroadcastReceivers() {
+    private void initializeBroadcastReceivers()
+    {
 
         // RECEIVER: state of playback has changed
-        mPlaybackStateChangedReceiver = new BroadcastReceiver() {
+        mPlaybackStateChangedReceiver = new BroadcastReceiver()
+        {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.hasExtra(TransistorKeys.EXTRA_PLAYBACK_STATE_CHANGE)) {
+            public void onReceive(Context context, Intent intent)
+            {
+                if (intent.hasExtra(TransistorKeys.EXTRA_PLAYBACK_STATE_CHANGE))
+                {
                     handlePlaybackStateChanged(intent);
                 }
             }

@@ -122,30 +122,30 @@ public final class StationFetcher extends AsyncTask<Void, Void, Station>
             if (mStationUriScheme != null && mStationUriScheme.startsWith("http"))
             {
                 // construct error message for "http"
-                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_download);
-                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_download);
-                errorDetails = buildDownloadErrorDetails(fetchResults);
+//                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_download);
+//                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_download);
+//                errorDetails = buildDownloadErrorDetails(fetchResults);
             }
             else if (mStationUriScheme != null && mStationUriScheme.startsWith("file"))
             {
                 // construct error message for "file"
-                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_read);
-                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_read);
-                errorDetails = buildReadErrorDetails(fetchResults);
+//                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_read);
+//                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_read);
+//                errorDetails = buildReadErrorDetails(fetchResults);
             }
             else if (!mFolderExists)
             {
                 // construct error message for write error
-                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_write);
-                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_write);
-                errorDetails = mActivity.getResources().getString(R.string.dialog_error_details_write);
+//                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_write);
+//                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_write);
+//                errorDetails = mActivity.getResources().getString(R.string.dialog_error_details_write);
             }
             else
             {
                 // default values
-                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_default);
-                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_default);
-                errorDetails = mActivity.getResources().getString(R.string.dialog_error_details_default);
+//                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_default);
+//                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_default);
+//                errorDetails = mActivity.getResources().getString(R.string.dialog_error_details_default);
             }
 
             // show error dialog
