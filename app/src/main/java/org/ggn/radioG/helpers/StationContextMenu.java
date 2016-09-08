@@ -50,7 +50,7 @@ public final class StationContextMenu extends DialogFragment {
 
                 switch (item.getItemId()) {
 
-                    // CASE ICON
+   /*                 // CASE ICON
                     case R.id.menu_icon:
                         // send local broadcast (needed by MainActivityFragment)
                         Intent iconIntent = new Intent();
@@ -58,7 +58,7 @@ public final class StationContextMenu extends DialogFragment {
                         iconIntent.putExtra(ConstantKeys.EXTRA_STATION, mStation);
                         iconIntent.putExtra(ConstantKeys.EXTRA_STATION_ID, mStationID);
                         LocalBroadcastManager.getInstance(mActivity.getApplication()).sendBroadcast(iconIntent);
-                        return true;
+                        return true;*/
 
                     // CASE RENAME
                     case R.id.menu_rename:

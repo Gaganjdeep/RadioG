@@ -21,21 +21,23 @@ import org.ggn.radioG.core.Station;
 /**
  * NotificationHelper class
  */
-public final class NotificationHelper {
+public final class NotificationHelper
+{
 
     /* Define log tag */
     private static final String LOG_TAG = NotificationHelper.class.getSimpleName();
 
 
     /* Main class variables */
-    private static Notification mNotification;
-    private static Service mService;
+    private static Notification       mNotification;
+    private static Service            mService;
     private static MediaSessionCompat mSession;
-    private static String mStationMetadata;
+    private static String             mStationMetadata;
 
 
     /* Create and put up notification */
-    public static void show(final Service service, MediaSessionCompat session, Station station, int stationID, String stationMetadata) {
+    public static void show(final Service service, MediaSessionCompat session, Station station, int stationID, String stationMetadata)
+    {
         // save service and session
         mService = service;
         mSession = session;
@@ -51,15 +53,18 @@ public final class NotificationHelper {
 
 
     /* Updates the notification */
-    public static void update(Station station, int stationID, String stationMetadata, MediaSessionCompat session) {
+    public static void update(Station station, int stationID, String stationMetadata, MediaSessionCompat session)
+    {
 
         // session can be null on update
-        if (session != null) {
+        if (session != null)
+        {
             mSession = session;
         }
 
         // metadata can be null on update
-        if (stationMetadata != null) {
+        if (stationMetadata != null)
+        {
             mStationMetadata = stationMetadata;
         }
 
@@ -70,7 +75,8 @@ public final class NotificationHelper {
         NotificationManager notificationManager = (NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(ConstantKeys.PLAYER_SERVICE_NOTIFICATION_ID, mNotification);
 
-        if (!station.getPlaybackState()) {
+        if (!station.getPlaybackState())
+        {
             // make notification swipe-able
             mService.stopForeground(false);
         }
@@ -79,15 +85,18 @@ public final class NotificationHelper {
 
 
     /* Stop displaying notification */
-    public static void stop() {
-        if (mService != null) {
+    public static void stop()
+    {
+        if (mService != null)
+        {
             mService.stopForeground(true);
         }
     }
 
 
     /* Creates a notification builder */
-    private static NotificationCompat.Builder getNotificationBuilder(Station station, int stationID, String stationMetadata) {
+    private static NotificationCompat.Builder getNotificationBuilder(Station station, int stationID, String stationMetadata)
+    {
 
         // explicit intent for notification tap
         Intent tapActionIntent = new Intent(mService, MainActivity.class);
@@ -145,9 +154,12 @@ public final class NotificationHelper {
         builder.setContentIntent(tapActionPendingIntent);
         builder.setDeleteIntent(swipeActionPendingIntent);
 
-        if (station.getPlaybackState()) {
+        if (station.getPlaybackState())
+        {
             builder.addAction(R.drawable.ic_stop_white_36dp, mService.getString(R.string.notification_stop), stopActionPendingIntent);
-        } else {
+        }
+        else
+        {
             builder.addAction(R.drawable.ic_play_arrow_white_36dp, mService.getString(R.string.notification_play), playActionPendingIntent);
         }
 
@@ -156,24 +168,29 @@ public final class NotificationHelper {
 
 
     /* Get station image for notification's large icon */
-    private static Bitmap getStationIcon(Context context, Station station) {
-        if (station == null) {
+    private static Bitmap getStationIcon(Context context, Station station)
+    {
+        if (station == null)
+        {
             return null;
         }
 
         // create station image icon
         ImageHelper imageHelper;
-        Bitmap stationImage;
-        Bitmap stationIcon;
+        Bitmap      stationImage;
+        Bitmap      stationIcon;
 
-        if (station.getStationImageFile().exists()) {
+        if (station.getStationImageFile().exists())
+        {
             // use station image
             stationImage = BitmapFactory.decodeFile(station.getStationImageFile().toString());
-        } else {
+        }
+        else
+        {
             stationImage = null;
         }
         imageHelper = new ImageHelper(stationImage, context);
-        stationIcon = imageHelper.createStationIcon(512);
+        stationIcon = imageHelper.createStationIcon(250);
 
         return stationIcon;
     }

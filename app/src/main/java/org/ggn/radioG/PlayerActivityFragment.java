@@ -487,11 +487,11 @@ public final class PlayerActivityFragment extends Fragment
         switch (item.getItemId())
         {
 
-            // CASE ICON
+        /*    // CASE ICON
             case R.id.menu_icon:
                 // get system picker for images
                 selectFromImagePicker();
-                return true;
+                return true;*/
 
             // CASE RENAME
             case R.id.menu_rename:

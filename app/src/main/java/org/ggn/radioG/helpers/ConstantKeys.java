@@ -81,4 +81,7 @@ public class ConstantKeys
     public static final String PLAYER_FRAGMENT_TAG            = "PFTAG";
     public static final String SHOUTCAST_STREAM_TITLE_HEADER  = "StreamTitle='";
 
+
+    public static final String GET_STATIONS_LIST = "http://112.196.34.42:8078//api/Files/GetAllFiles";
+
 }

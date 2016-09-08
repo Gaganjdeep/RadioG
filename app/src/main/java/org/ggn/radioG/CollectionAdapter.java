@@ -677,9 +677,12 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
                 case ConstantKeys.PLAYBACK_STARTED:
                     try
                     {
-                        mStationLoading = false;
-                        mStationList.get(stationID).setPlaybackState(true);
-                        notifyDataSetChanged();
+                        if (mStationList!=null && mStationList.size()>0)
+                        {
+                            mStationLoading = false;
+                            mStationList.get(stationID).setPlaybackState(true);
+                            notifyDataSetChanged();
+                        }
                     }
                     catch (Exception e)
                     {
@@ -691,8 +694,11 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
                 case ConstantKeys.PLAYBACK_STOPPED:
                     try
                     {
-                        mPlayback = false;
-                        mStationList.get(stationID).setPlaybackState(false);
+                        if (mStationList!=null && mStationList.size()>0)
+                        {
+                            mPlayback = false;
+                            mStationList.get(stationID).setPlaybackState(false);
+                        }
                         notifyDataSetChanged();
                     }
                     catch (Exception e)

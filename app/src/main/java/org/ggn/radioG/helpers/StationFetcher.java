@@ -46,7 +46,7 @@ public final class StationFetcher extends AsyncTask<Void, Void, Station>
 
         if (stationUri != null && mStationUriScheme != null && mStationUriScheme.startsWith("http"))
         {
-//            Toast.makeText(mActivity, mActivity.getString(R.string.toastmessage_add_download_started), Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, mActivity.getString(R.string.toastmessage_add_download_started), Toast.LENGTH_LONG).show();
         }
         else if (stationUri != null && mStationUriScheme != null && mStationUriScheme.startsWith("file"))
         {
@@ -175,7 +175,6 @@ public final class StationFetcher extends AsyncTask<Void, Void, Station>
     /* Builds more detailed download error string */
     private String buildDownloadErrorDetails(Bundle fetchResults)
     {
-
         String fileContent = fetchResults.getString(ConstantKeys.RESULT_FILE_CONTENT);
         String playListType;
         String streamType;
