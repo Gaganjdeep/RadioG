@@ -77,11 +77,11 @@ public final class DialogRename {
 
                 // send local broadcast
                 Intent i = new Intent();
-                i.setAction(TransistorKeys.ACTION_COLLECTION_CHANGED);
-                i.putExtra(TransistorKeys.EXTRA_COLLECTION_CHANGE, TransistorKeys.STATION_RENAMED);
-                i.putExtra(TransistorKeys.EXTRA_STATION_ID, mStationID);
-                i.putExtra(TransistorKeys.EXTRA_STATION, mStation);
-                i.putExtra(TransistorKeys.EXTRA_STATION_NEW_NAME, stationNewName);
+                i.setAction(ConstantKeys.ACTION_COLLECTION_CHANGED);
+                i.putExtra(ConstantKeys.EXTRA_COLLECTION_CHANGE, ConstantKeys.STATION_RENAMED);
+                i.putExtra(ConstantKeys.EXTRA_STATION_ID, mStationID);
+                i.putExtra(ConstantKeys.EXTRA_STATION, mStation);
+                i.putExtra(ConstantKeys.EXTRA_STATION_NEW_NAME, stationNewName);
                 LocalBroadcastManager.getInstance(mActivity.getApplication()).sendBroadcast(i);
 
             }

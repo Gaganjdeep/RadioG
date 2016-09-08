@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 
 import org.ggn.radioG.core.Station;
-import org.ggn.radioG.helpers.TransistorKeys;
+import org.ggn.radioG.helpers.ConstantKeys;
 
 
 /**
@@ -30,26 +30,26 @@ public final class PlayerActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         // CASE: show player in phone mode
-        if (intent != null && TransistorKeys.ACTION_SHOW_PLAYER.equals(intent.getAction())) {
+        if (intent != null && ConstantKeys.ACTION_SHOW_PLAYER.equals(intent.getAction())) {
 
             // get station from intent
             Station station;
-            if (intent.hasExtra(TransistorKeys.EXTRA_STATION)) {
-                station = intent.getParcelableExtra(TransistorKeys.EXTRA_STATION);
+            if (intent.hasExtra(ConstantKeys.EXTRA_STATION)) {
+                station = intent.getParcelableExtra(ConstantKeys.EXTRA_STATION);
             } else {
                 station = null;
             }
 
             // get id of station from intent
             int stationID = 0;
-            if (intent.hasExtra(TransistorKeys.EXTRA_STATION_ID)) {
-                stationID = intent.getIntExtra(TransistorKeys.EXTRA_STATION_ID, 0);
+            if (intent.hasExtra(ConstantKeys.EXTRA_STATION_ID)) {
+                stationID = intent.getIntExtra(ConstantKeys.EXTRA_STATION_ID, 0);
             }
 
             // get playback action from intent (if started from shortcut)
             boolean startPlayback;
-            if (intent.hasExtra(TransistorKeys.EXTRA_PLAYBACK_STATE)) {
-                startPlayback = intent.getBooleanExtra(TransistorKeys.EXTRA_PLAYBACK_STATE, false);
+            if (intent.hasExtra(ConstantKeys.EXTRA_PLAYBACK_STATE)) {
+                startPlayback = intent.getBooleanExtra(ConstantKeys.EXTRA_PLAYBACK_STATE, false);
 
                 // enable the Up button
                 ActionBar actionBar = getSupportActionBar();
@@ -63,9 +63,9 @@ public final class PlayerActivity extends AppCompatActivity {
 
             // create bundle for player activity fragment
             Bundle args = new Bundle();
-            args.putParcelable(TransistorKeys.ARG_STATION, station);
-            args.putInt(TransistorKeys.ARG_STATION_ID, stationID);
-            args.putBoolean(TransistorKeys.ARG_PLAYBACK, startPlayback);
+            args.putParcelable(ConstantKeys.ARG_STATION, station);
+            args.putInt(ConstantKeys.ARG_STATION_ID, stationID);
+            args.putBoolean(ConstantKeys.ARG_PLAYBACK, startPlayback);
 
             PlayerActivityFragment playerActivityFragment = new PlayerActivityFragment();
             playerActivityFragment.setArguments(args);

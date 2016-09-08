@@ -71,9 +71,9 @@ public class ShortcutHelper {
 
         // create intent to start MainActivity
         Intent shortcutIntent = new Intent(mContext, MainActivity.class);
-        shortcutIntent.setAction(TransistorKeys.ACTION_SHOW_PLAYER);
-        shortcutIntent.putExtra(TransistorKeys.EXTRA_STREAM_URI, stationUri);
-        shortcutIntent.putExtra(TransistorKeys.EXTRA_PLAYBACK_STATE, true);
+        shortcutIntent.setAction(ConstantKeys.ACTION_SHOW_PLAYER);
+        shortcutIntent.putExtra(ConstantKeys.EXTRA_STREAM_URI, stationUri);
+        shortcutIntent.putExtra(ConstantKeys.EXTRA_PLAYBACK_STATE, true);
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 

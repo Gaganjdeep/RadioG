@@ -92,18 +92,17 @@ public final class StationFetcher extends AsyncTask<Void, Void, Station>
         }
 
         // station was successfully fetched
-        if (station != null && fetchResults != null && !fetchResults.getBoolean(TransistorKeys.RESULT_FETCH_ERROR) && mFolderExists)
+        if (station != null && fetchResults != null && !fetchResults.getBoolean(ConstantKeys.RESULT_FETCH_ERROR) && mFolderExists)
         {
-
             // send local broadcast - adapter will save station
             Intent i = new Intent();
-            i.setAction(TransistorKeys.ACTION_COLLECTION_CHANGED);
-            i.putExtra(TransistorKeys.EXTRA_COLLECTION_CHANGE, TransistorKeys.STATION_ADDED);
-            i.putExtra(TransistorKeys.EXTRA_STATION, station);
+            i.setAction(ConstantKeys.ACTION_COLLECTION_CHANGED);
+            i.putExtra(ConstantKeys.EXTRA_COLLECTION_CHANGE, ConstantKeys.STATION_ADDED);
+            i.putExtra(ConstantKeys.EXTRA_STATION, station);
             LocalBroadcastManager.getInstance(mActivity.getApplication()).sendBroadcast(i);
 
             // inform user that aac might not work properly
-            if (fetchResults.containsKey(TransistorKeys.RESULT_STREAM_TYPE) && fetchResults.getParcelable(TransistorKeys.RESULT_STREAM_TYPE) != null && fetchResults.getParcelable(TransistorKeys.RESULT_STREAM_TYPE).toString().contains("aac"))
+            if (fetchResults.containsKey(ConstantKeys.RESULT_STREAM_TYPE) && fetchResults.getParcelable(ConstantKeys.RESULT_STREAM_TYPE) != null && fetchResults.getParcelable(ConstantKeys.RESULT_STREAM_TYPE).toString().contains("aac"))
             {
                 Toast.makeText(mActivity, mActivity.getString(R.string.toastmessage_stream_may_not_work), Toast.LENGTH_LONG).show();
             }
@@ -112,7 +111,7 @@ public final class StationFetcher extends AsyncTask<Void, Void, Station>
         }
 
         // an error occurred
-        if (station == null || (fetchResults != null && fetchResults.getBoolean(TransistorKeys.RESULT_FETCH_ERROR)) || !mFolderExists)
+        if (station == null || (fetchResults != null && fetchResults.getBoolean(ConstantKeys.RESULT_FETCH_ERROR)) || !mFolderExists)
         {
 
             String errorTitle;
@@ -122,35 +121,35 @@ public final class StationFetcher extends AsyncTask<Void, Void, Station>
             if (mStationUriScheme != null && mStationUriScheme.startsWith("http"))
             {
                 // construct error message for "http"
-//                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_download);
-//                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_download);
-//                errorDetails = buildDownloadErrorDetails(fetchResults);
+                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_download);
+                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_download);
+                errorDetails = buildDownloadErrorDetails(fetchResults);
             }
             else if (mStationUriScheme != null && mStationUriScheme.startsWith("file"))
             {
                 // construct error message for "file"
-//                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_read);
-//                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_read);
-//                errorDetails = buildReadErrorDetails(fetchResults);
+                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_read);
+                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_read);
+                errorDetails = buildReadErrorDetails(fetchResults);
             }
             else if (!mFolderExists)
             {
                 // construct error message for write error
-//                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_write);
-//                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_write);
-//                errorDetails = mActivity.getResources().getString(R.string.dialog_error_details_write);
+                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_fetch_write);
+                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_fetch_write);
+                errorDetails = mActivity.getResources().getString(R.string.dialog_error_details_write);
             }
             else
             {
                 // default values
-//                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_default);
-//                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_default);
-//                errorDetails = mActivity.getResources().getString(R.string.dialog_error_details_default);
+                errorTitle = mActivity.getResources().getString(R.string.dialog_error_title_default);
+                errorMessage = mActivity.getResources().getString(R.string.dialog_error_message_default);
+                errorDetails = mActivity.getResources().getString(R.string.dialog_error_details_default);
             }
 
             // show error dialog
-//            DialogError dialogError = new DialogError(mActivity, errorTitle, errorMessage, errorDetails);
-//            dialogError.show();
+            DialogError dialogError = new DialogError(mActivity, errorTitle, errorMessage, errorDetails);
+            dialogError.show();
         }
 
     }
@@ -177,20 +176,20 @@ public final class StationFetcher extends AsyncTask<Void, Void, Station>
     private String buildDownloadErrorDetails(Bundle fetchResults)
     {
 
-        String fileContent = fetchResults.getString(TransistorKeys.RESULT_FILE_CONTENT);
+        String fileContent = fetchResults.getString(ConstantKeys.RESULT_FILE_CONTENT);
         String playListType;
         String streamType;
-        if (fetchResults.containsKey(TransistorKeys.RESULT_PLAYLIST_TYPE) && fetchResults.getParcelable(TransistorKeys.RESULT_PLAYLIST_TYPE) != null)
+        if (fetchResults.containsKey(ConstantKeys.RESULT_PLAYLIST_TYPE) && fetchResults.getParcelable(ConstantKeys.RESULT_PLAYLIST_TYPE) != null)
         {
-            playListType = fetchResults.getParcelable(TransistorKeys.RESULT_PLAYLIST_TYPE).toString();
+            playListType = fetchResults.getParcelable(ConstantKeys.RESULT_PLAYLIST_TYPE).toString();
         }
         else
         {
             playListType = "unknown";
         }
-        if (fetchResults.containsKey(TransistorKeys.RESULT_STREAM_TYPE) && fetchResults.getParcelable(TransistorKeys.RESULT_STREAM_TYPE) != null)
+        if (fetchResults.containsKey(ConstantKeys.RESULT_STREAM_TYPE) && fetchResults.getParcelable(ConstantKeys.RESULT_STREAM_TYPE) != null)
         {
-            streamType = fetchResults.getParcelable(TransistorKeys.RESULT_STREAM_TYPE).toString();
+            streamType = fetchResults.getParcelable(ConstantKeys.RESULT_STREAM_TYPE).toString();
         }
         else
         {
@@ -269,9 +268,9 @@ public final class StationFetcher extends AsyncTask<Void, Void, Station>
             sb.append(mActivity.getResources().getString(R.string.dialog_error_message_fetch_general_hint_m3u));
         }
 
-        if (fetchResults != null && fetchResults.getBoolean(TransistorKeys.RESULT_FETCH_ERROR))
+        if (fetchResults != null && fetchResults.getBoolean(ConstantKeys.RESULT_FETCH_ERROR))
         {
-            String fileContent = fetchResults.getString(TransistorKeys.RESULT_FILE_CONTENT);
+            String fileContent = fetchResults.getString(ConstantKeys.RESULT_FILE_CONTENT);
             if (fileContent != null)
             {
                 sb.append("\n\n");

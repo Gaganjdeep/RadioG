@@ -46,7 +46,7 @@ public final class NotificationHelper {
         mNotification = getNotificationBuilder(station, stationID, mStationMetadata).build(); // TODO: change -> Station object contains metadata, too
 
         // display notification
-        service.startForeground(TransistorKeys.PLAYER_SERVICE_NOTIFICATION_ID, mNotification);
+        service.startForeground(ConstantKeys.PLAYER_SERVICE_NOTIFICATION_ID, mNotification);
     }
 
 
@@ -68,7 +68,7 @@ public final class NotificationHelper {
 
         // display updated notification
         NotificationManager notificationManager = (NotificationManager) mService.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(TransistorKeys.PLAYER_SERVICE_NOTIFICATION_ID, mNotification);
+        notificationManager.notify(ConstantKeys.PLAYER_SERVICE_NOTIFICATION_ID, mNotification);
 
         if (!station.getPlaybackState()) {
             // make notification swipe-able
@@ -91,21 +91,21 @@ public final class NotificationHelper {
 
         // explicit intent for notification tap
         Intent tapActionIntent = new Intent(mService, MainActivity.class);
-        tapActionIntent.setAction(TransistorKeys.ACTION_SHOW_PLAYER);
-        tapActionIntent.putExtra(TransistorKeys.EXTRA_STATION, station);
-        tapActionIntent.putExtra(TransistorKeys.EXTRA_STATION_ID, stationID);
+        tapActionIntent.setAction(ConstantKeys.ACTION_SHOW_PLAYER);
+        tapActionIntent.putExtra(ConstantKeys.EXTRA_STATION, station);
+        tapActionIntent.putExtra(ConstantKeys.EXTRA_STATION_ID, stationID);
 
         // explicit intent for stopping playback
         Intent stopActionIntent = new Intent(mService, PlayerService.class);
-        stopActionIntent.setAction(TransistorKeys.ACTION_STOP);
+        stopActionIntent.setAction(ConstantKeys.ACTION_STOP);
 
         // explicit intent for starting playback
         Intent playActionIntent = new Intent(mService, PlayerService.class);
-        playActionIntent.setAction(TransistorKeys.ACTION_PLAY);
+        playActionIntent.setAction(ConstantKeys.ACTION_PLAY);
 
         // explicit intent for swiping notification
         Intent swipeActionIntent = new Intent(mService, PlayerService.class);
-        swipeActionIntent.setAction(TransistorKeys.ACTION_DISMISS);
+        swipeActionIntent.setAction(ConstantKeys.ACTION_DISMISS);
 
         // artificial back stack for started Activity.
         // -> navigating backward from the Activity leads to Home screen.

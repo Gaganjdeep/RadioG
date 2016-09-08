@@ -22,12 +22,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.ggn.radioG.core.Station;
+import org.ggn.radioG.helpers.ConstantKeys;
 import org.ggn.radioG.helpers.DialogError;
 import org.ggn.radioG.helpers.ImageHelper;
 import org.ggn.radioG.helpers.LogHelper;
 import org.ggn.radioG.helpers.ShortcutHelper;
 import org.ggn.radioG.helpers.StationContextMenu;
-import org.ggn.radioG.helpers.TransistorKeys;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -308,23 +308,23 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
         if (mTwoPane)
         {
             Bundle args = new Bundle();
-            args.putParcelable(TransistorKeys.ARG_STATION, station);
-            args.putInt(TransistorKeys.ARG_STATION_ID, position);
-            args.putBoolean(TransistorKeys.ARG_TWO_PANE, mTwoPane);
+            args.putParcelable(ConstantKeys.ARG_STATION, station);
+            args.putInt(ConstantKeys.ARG_STATION_ID, position);
+            args.putBoolean(ConstantKeys.ARG_TWO_PANE, mTwoPane);
 
             PlayerActivityFragment playerActivityFragment = new PlayerActivityFragment();
             playerActivityFragment.setArguments(args);
             mActivity.getFragmentManager().beginTransaction()
-                    .replace(R.id.player_container, playerActivityFragment, TransistorKeys.PLAYER_FRAGMENT_TAG)
+                    .replace(R.id.player_container, playerActivityFragment, ConstantKeys.PLAYER_FRAGMENT_TAG)
                     .commit();
         }
         else
         {
             // add ID of station to intent and start activity
             Intent intent = new Intent(mActivity, PlayerActivity.class);
-            intent.setAction(TransistorKeys.ACTION_SHOW_PLAYER);
-            intent.putExtra(TransistorKeys.EXTRA_STATION, station);
-            intent.putExtra(TransistorKeys.EXTRA_STATION_ID, position);
+            intent.setAction(ConstantKeys.ACTION_SHOW_PLAYER);
+            intent.putExtra(ConstantKeys.EXTRA_STATION, station);
+            intent.putExtra(ConstantKeys.EXTRA_STATION_ID, position);
             mActivity.startActivity(intent);
         }
     }
@@ -341,7 +341,7 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
         {
             // stop player service using intent
             Intent intent = new Intent(mActivity, PlayerService.class);
-            intent.setAction(TransistorKeys.ACTION_STOP);
+            intent.setAction(ConstantKeys.ACTION_STOP);
             mActivity.startService(intent);
             LogHelper.v(LOG_TAG, "Stopping player service.");
 
@@ -360,9 +360,9 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
         {
             // start player service using intent
             Intent intent = new Intent(mActivity, PlayerService.class);
-            intent.setAction(TransistorKeys.ACTION_PLAY);
-            intent.putExtra(TransistorKeys.EXTRA_STATION, mStationList.get(position));
-            intent.putExtra(TransistorKeys.EXTRA_STATION_ID, position);
+            intent.setAction(ConstantKeys.ACTION_PLAY);
+            intent.putExtra(ConstantKeys.EXTRA_STATION, mStationList.get(position));
+            intent.putExtra(ConstantKeys.EXTRA_STATION_ID, position);
             mActivity.startService(intent);
             LogHelper.v(LOG_TAG, "Starting player service.");
 
@@ -397,12 +397,12 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
     private void loadAppState(Context context)
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        mTwoPane = settings.getBoolean(TransistorKeys.PREF_TWO_PANE, false);
-        mStationIDCurrent = settings.getInt(TransistorKeys.PREF_STATION_ID_CURRENTLY_PLAYING, -1);
-        mStationIDLast = settings.getInt(TransistorKeys.PREF_STATION_ID_LAST, -1);
-        mStationIDSelected = settings.getInt(TransistorKeys.PREF_STATION_ID_SELECTED, 0);
-        mPlayback = settings.getBoolean(TransistorKeys.PREF_PLAYBACK, false);
-        mStationLoading = settings.getBoolean(TransistorKeys.PREF_STATION_LOADING, false);
+        mTwoPane = settings.getBoolean(ConstantKeys.PREF_TWO_PANE, false);
+        mStationIDCurrent = settings.getInt(ConstantKeys.PREF_STATION_ID_CURRENTLY_PLAYING, -1);
+        mStationIDLast = settings.getInt(ConstantKeys.PREF_STATION_ID_LAST, -1);
+        mStationIDSelected = settings.getInt(ConstantKeys.PREF_STATION_ID_SELECTED, 0);
+        mPlayback = settings.getBoolean(ConstantKeys.PREF_PLAYBACK, false);
+        mStationLoading = settings.getBoolean(ConstantKeys.PREF_STATION_LOADING, false);
         LogHelper.v(LOG_TAG, "Loading state (" + mStationIDCurrent + " / " + mStationIDLast + " / " + mPlayback + " / " + mStationLoading + ")");
     }
 
@@ -412,7 +412,7 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
     {
         SharedPreferences        settings = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor   = settings.edit();
-        editor.putInt(TransistorKeys.PREF_STATION_ID_SELECTED, mStationIDSelected);
+        editor.putInt(ConstantKeys.PREF_STATION_ID_SELECTED, mStationIDSelected);
         editor.apply();
         LogHelper.v(LOG_TAG, "Saving state (" + mStationIDCurrent + " / " + mStationIDLast + " / " + mPlayback + " / " + mStationLoading + " / " + mStationIDSelected + ")");
     }
@@ -443,9 +443,9 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
         {
             // start player service using intent
             Intent intent = new Intent(mActivity, PlayerService.class);
-            intent.setAction(TransistorKeys.ACTION_PLAY);
-            intent.putExtra(TransistorKeys.EXTRA_STATION, mStationList.get(stationIDSelected));
-            intent.putExtra(TransistorKeys.EXTRA_STATION_ID, stationIDSelected);
+            intent.setAction(ConstantKeys.ACTION_PLAY);
+            intent.putExtra(ConstantKeys.EXTRA_STATION, mStationList.get(stationIDSelected));
+            intent.putExtra(ConstantKeys.EXTRA_STATION_ID, stationIDSelected);
             mActivity.startService(intent);
             LogHelper.v(LOG_TAG, "Starting player service.");
         }
@@ -620,13 +620,13 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
             {
                 // show next station
                 Bundle args = new Bundle();
-                args.putParcelable(TransistorKeys.ARG_STATION, mStationList.get(stationID));
-                args.putInt(TransistorKeys.ARG_STATION_ID, stationID);
-                args.putBoolean(TransistorKeys.ARG_TWO_PANE, mTwoPane);
+                args.putParcelable(ConstantKeys.ARG_STATION, mStationList.get(stationID));
+                args.putInt(ConstantKeys.ARG_STATION_ID, stationID);
+                args.putBoolean(ConstantKeys.ARG_TWO_PANE, mTwoPane);
                 PlayerActivityFragment playerActivityFragment = new PlayerActivityFragment();
                 playerActivityFragment.setArguments(args);
                 mActivity.getFragmentManager().beginTransaction()
-                        .replace(R.id.player_container, playerActivityFragment, TransistorKeys.PLAYER_FRAGMENT_TAG)
+                        .replace(R.id.player_container, playerActivityFragment, ConstantKeys.PLAYER_FRAGMENT_TAG)
                         .commit();
             }
         }
@@ -643,38 +643,62 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
         // load app state
         loadAppState(mActivity);
 
-        if (intent.hasExtra(TransistorKeys.EXTRA_PLAYBACK_STATE_CHANGE) && intent.hasExtra(TransistorKeys.EXTRA_STATION_ID))
+        if (intent.hasExtra(ConstantKeys.EXTRA_PLAYBACK_STATE_CHANGE) && intent.hasExtra(ConstantKeys.EXTRA_STATION_ID))
         {
 
             // get station ID from intent
-            int stationID = intent.getIntExtra(TransistorKeys.EXTRA_STATION_ID, 0);
-            switch (intent.getIntExtra(TransistorKeys.EXTRA_PLAYBACK_STATE_CHANGE, 1))
+            int stationID = intent.getIntExtra(ConstantKeys.EXTRA_STATION_ID, 0);
+            switch (intent.getIntExtra(ConstantKeys.EXTRA_PLAYBACK_STATE_CHANGE, 1))
             {
 
                 // CASE: player is preparing stream
-                case TransistorKeys.PLAYBACK_LOADING_STATION:
-                    if (mStationIDLast > -1 && mStationIDLast < mStationList.size() - 1)
+                case ConstantKeys.PLAYBACK_LOADING_STATION:
+
+                    try
                     {
-                        mStationList.get(mStationIDLast).setPlaybackState(false);
+                        if (mStationIDLast > -1 && mStationIDLast < mStationList.size() - 1)
+                        {
+                            mStationList.get(mStationIDLast).setPlaybackState(false);
+                        }
+                        mStationLoading = true;
+                        mPlayback = true;
+                        mStationList.get(stationID).setPlaybackState(true);
+                        notifyDataSetChanged();
                     }
-                    mStationLoading = true;
-                    mPlayback = true;
-                    mStationList.get(stationID).setPlaybackState(true);
-                    notifyDataSetChanged();
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
+
                     break;
 
                 // CASE: playback has started
-                case TransistorKeys.PLAYBACK_STARTED:
-                    mStationLoading = false;
-                    mStationList.get(stationID).setPlaybackState(true);
-                    notifyDataSetChanged();
+                case ConstantKeys.PLAYBACK_STARTED:
+                    try
+                    {
+                        mStationLoading = false;
+                        mStationList.get(stationID).setPlaybackState(true);
+                        notifyDataSetChanged();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                     break;
 
                 // CASE: playback was stopped
-                case TransistorKeys.PLAYBACK_STOPPED:
-                    mPlayback = false;
-                    mStationList.get(stationID).setPlaybackState(false);
-                    notifyDataSetChanged();
+                case ConstantKeys.PLAYBACK_STOPPED:
+                    try
+                    {
+                        mPlayback = false;
+                        mStationList.get(stationID).setPlaybackState(false);
+                        notifyDataSetChanged();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                     break;
             }
         }
@@ -692,13 +716,13 @@ public final class CollectionAdapter extends RecyclerView.Adapter<CollectionAdap
             @Override
             public void onReceive(Context context, Intent intent)
             {
-                if (intent.hasExtra(TransistorKeys.EXTRA_PLAYBACK_STATE_CHANGE))
+                if (intent.hasExtra(ConstantKeys.EXTRA_PLAYBACK_STATE_CHANGE))
                 {
                     handlePlaybackStateChanged(intent);
                 }
             }
         };
-        IntentFilter playbackStateChangedIntentFilter = new IntentFilter(TransistorKeys.ACTION_PLAYBACK_STATE_CHANGED);
+        IntentFilter playbackStateChangedIntentFilter = new IntentFilter(ConstantKeys.ACTION_PLAYBACK_STATE_CHANGED);
         LocalBroadcastManager.getInstance(mActivity).registerReceiver(mPlaybackStateChangedReceiver, playbackStateChangedIntentFilter);
     }
 

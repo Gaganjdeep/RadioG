@@ -54,9 +54,9 @@ public final class StationContextMenu extends DialogFragment {
                     case R.id.menu_icon:
                         // send local broadcast (needed by MainActivityFragment)
                         Intent iconIntent = new Intent();
-                        iconIntent.setAction(TransistorKeys.ACTION_IMAGE_CHANGE_REQUESTED);
-                        iconIntent.putExtra(TransistorKeys.EXTRA_STATION, mStation);
-                        iconIntent.putExtra(TransistorKeys.EXTRA_STATION_ID, mStationID);
+                        iconIntent.setAction(ConstantKeys.ACTION_IMAGE_CHANGE_REQUESTED);
+                        iconIntent.putExtra(ConstantKeys.EXTRA_STATION, mStation);
+                        iconIntent.putExtra(ConstantKeys.EXTRA_STATION_ID, mStationID);
                         LocalBroadcastManager.getInstance(mActivity.getApplication()).sendBroadcast(iconIntent);
                         return true;
 

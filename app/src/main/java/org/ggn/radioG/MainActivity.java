@@ -17,9 +17,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import org.ggn.radioG.helpers.ConstantKeys;
 import org.ggn.radioG.helpers.LogHelper;
 import org.ggn.radioG.helpers.StorageHelper;
-import org.ggn.radioG.helpers.TransistorKeys;
 
 import java.io.File;
 
@@ -147,7 +147,7 @@ public final class MainActivity extends AppCompatActivity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = settings.edit();
         // editor.putInt(PREF_STATION_ID_SELECTED, mStationID);
-        editor.putBoolean(TransistorKeys.PREF_TWO_PANE, mTwoPane);
+        editor.putBoolean(ConstantKeys.PREF_TWO_PANE, mTwoPane);
         editor.apply();
         LogHelper.v(LOG_TAG, "Saving state. Two Pane = " + mTwoPane);
     }
@@ -175,7 +175,7 @@ public final class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        IntentFilter collectionChangedIntentFilter = new IntentFilter(TransistorKeys.ACTION_COLLECTION_CHANGED);
+        IntentFilter collectionChangedIntentFilter = new IntentFilter(ConstantKeys.ACTION_COLLECTION_CHANGED);
         LocalBroadcastManager.getInstance(this).registerReceiver(mCollectionChangedReceiver, collectionChangedIntentFilter);
     }
 

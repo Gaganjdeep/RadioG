@@ -61,10 +61,10 @@ public final class DialogDelete {
 
                 // send local broadcast
                 Intent i = new Intent();
-                i.setAction(TransistorKeys.ACTION_COLLECTION_CHANGED);
-                i.putExtra(TransistorKeys.EXTRA_COLLECTION_CHANGE, TransistorKeys.STATION_DELETED);
-                i.putExtra(TransistorKeys.EXTRA_STATION, mStation);
-                i.putExtra(TransistorKeys.EXTRA_STATION_ID, mStationID);
+                i.setAction(ConstantKeys.ACTION_COLLECTION_CHANGED);
+                i.putExtra(ConstantKeys.EXTRA_COLLECTION_CHANGE, ConstantKeys.STATION_DELETED);
+                i.putExtra(ConstantKeys.EXTRA_STATION, mStation);
+                i.putExtra(ConstantKeys.EXTRA_STATION_ID, mStationID);
                 LocalBroadcastManager.getInstance(mActivity.getApplication()).sendBroadcast(i);
 
             }

@@ -237,9 +237,9 @@ public class MetadataHelper
                 String[] metadata = new String(buf, 0, metadataSize, StandardCharsets.UTF_8).split(";");
                 for (String s : metadata)
                 {
-                    if (s.indexOf(TransistorKeys.SHOUTCAST_STREAM_TITLE_HEADER) == 0 && s.length() >= TransistorKeys.SHOUTCAST_STREAM_TITLE_HEADER.length() + 1)
+                    if (s.indexOf(ConstantKeys.SHOUTCAST_STREAM_TITLE_HEADER) == 0 && s.length() >= ConstantKeys.SHOUTCAST_STREAM_TITLE_HEADER.length() + 1)
                     {
-                        handleMetadataString(s.substring(TransistorKeys.SHOUTCAST_STREAM_TITLE_HEADER.length(), s.length() - 1));
+                        handleMetadataString(s.substring(ConstantKeys.SHOUTCAST_STREAM_TITLE_HEADER.length(), s.length() - 1));
                     }
                 }
             }
@@ -257,15 +257,15 @@ public class MetadataHelper
         {
             // send local broadcast
             Intent i = new Intent();
-            i.setAction(TransistorKeys.ACTION_METADATA_CHANGED);
-            i.putExtra(TransistorKeys.EXTRA_METADATA, metadata);
-            i.putExtra(TransistorKeys.EXTRA_STATION, mStation);
+            i.setAction(ConstantKeys.ACTION_METADATA_CHANGED);
+            i.putExtra(ConstantKeys.EXTRA_METADATA, metadata);
+            i.putExtra(ConstantKeys.EXTRA_STATION, mStation);
             LocalBroadcastManager.getInstance(mContext).sendBroadcast(i);
 
             // save metadata to shared preferences
             SharedPreferences        settings = PreferenceManager.getDefaultSharedPreferences(mContext);
             SharedPreferences.Editor editor   = settings.edit();
-            editor.putString(TransistorKeys.PREF_STATION_METADATA, metadata);
+            editor.putString(ConstantKeys.PREF_STATION_METADATA, metadata);
             editor.apply();
         }
     }
