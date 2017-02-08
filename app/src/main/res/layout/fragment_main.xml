@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/transistor_gold"
     tools:context=".MainActivityFragment">
 
     <LinearLayout
@@ -25,7 +26,8 @@
             android:text="@string/actioncall_message_start_here"
             android:layout_weight="1"
             android:layout_gravity="center_vertical|bottom"
-            android:gravity="bottom|end"
+            android:gravity="top|end"
+            android:paddingTop="50dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionMode.Title" />

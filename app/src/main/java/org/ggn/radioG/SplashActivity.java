@@ -10,6 +10,8 @@ import org.ggn.radioG.core.Station;
 import org.ggn.radioG.helpers.StorageHelper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class SplashActivity extends Activity
 {
@@ -33,7 +35,13 @@ public class SplashActivity extends Activity
                     File          mFolder       = storageHelper.getCollectionDirectory();
 
 
-                    new Station(mFolder, "http://69.175.94.98:8146");
+                    new Station(mFolder, "http://69.175.94.98:8146", "Punjabi Songs"); //songs
+                    new Station(mFolder, "http://176.31.107.8:8459", "Punjabi ");
+                    new Station(mFolder, "http://173.192.105.231:8459", "kirtan"); //
+                    new Station(mFolder, "http://167.114.64.181:8554", "kirtan"); //kirtan
+                    new Station(mFolder, "http://192.151.153.234:9958", "kirtan"); //kirtan
+                    new Station(mFolder, "http://192.151.153.234:9978", "katha"); //
+                    new Station(mFolder, "http://198.105.220.12:3204", "Punjabi Songs.com Radio - Bhangra and Punjabi"); //Punjabi Songs .com Radio - Bhangra and Punjabi
                 }
                 catch (Exception e)
                 {
@@ -53,7 +61,7 @@ public class SplashActivity extends Activity
                     {
                         startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     }
-                }, 4000);
+                }, 2000);
 
             }
         }.execute();
@@ -105,4 +113,22 @@ public class SplashActivity extends Activity
 
 
     }
+
+    void deleteAllChannels(File f)
+    {
+        if (f.isDirectory())
+        {
+            for (File c : f.listFiles())
+            {
+                deleteAllChannels(c);
+            }
+        }
+        else
+        {
+            f.delete();
+        }
+    }
+
 }
+
+

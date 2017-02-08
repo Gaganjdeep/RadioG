@@ -226,6 +226,53 @@ public final class Station implements Comparable<Station>, Parcelable
         }
         return;
     }
+
+    //save from server end//save from server
+    public Station(File folder, String url, String name)
+    {
+        try
+        {
+            mStationFetchResults = new Bundle();
+
+            URL urlAUdio = new URL(url.trim());
+
+            mStreamUri = Uri.parse(url.trim());
+            mStationName = name;
+
+            String stationNameCleaned = mStationName.replaceAll("[:/]", "_");
+            String fileLocation       = folder.toString() + "/" + stationNameCleaned + ".m3u";
+            mStationPlaylistFile = new File(fileLocation);
+
+            if (!mStationPlaylistFile.exists())
+            {
+                // save results and return
+//                ContentType contentType = new ContentType();
+//                contentType.type = "application/octet-stream";
+//                contentType.charset = "null";
+//
+//                mStationFetchResults.putParcelable(ConstantKeys.RESULT_STREAM_TYPE, contentType);
+
+                setStationPlaylistFile(folder);
+                downloadImageFile(urlAUdio);
+                setStationImageFile(folder);
+
+
+                writePlaylistFile(folder);
+            }
+            else
+            {
+                mStationFetchResults.putBoolean(ConstantKeys.RESULT_FETCH_ERROR, true);
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            mStationFetchResults.putBoolean(ConstantKeys.RESULT_FETCH_ERROR, true);
+            e.printStackTrace();
+        }
+        return;
+    }
     //save from server end
 
     /* Constructor when given folder and file on sd card */
